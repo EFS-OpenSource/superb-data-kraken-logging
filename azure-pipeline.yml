@@ -1,0 +1,40 @@
+name: sdk-lib-logging-build-$(Date:yyyyMMdd)-$(Build.SourceBranchName)
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: MavenAuthenticate@0
+    inputs:
+      artifactsFeeds: sdk-snapshots, EFS-SDK
+  - task: Maven@3
+    displayName: 'Deploy the Snapshot of the SDK Logging Library'
+    inputs:
+      mavenPomFile: 'pom.xml'
+      goals: 'package deploy'
+      options: '-Dsnapshot-repo.id=$(snapshotRepoId) -Dsnapshot-repo.url=$(snapshotRepoUrl)'
+      publishJUnitResults: false
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.17'
+      mavenVersionOption: 'Default'
+      mavenAuthenticateFeed: false
+      effectivePomSkip: false
+      sonarQubeRunAnalysis: false
+  - powershell: |
+      $tag = "$(Build.SourceBranch)"
+      $tag = $tag -replace "refs/tags/", ""
+      echo "##vso[task.setvariable variable=TAG;isOutput=true]$tag"
+    name: createTagVariableStep
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+  - task: Maven@3
+    name: release_service_storage_common_lib
+    displayName: 'Release the SDK Logging Library when git tag is set'
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+    inputs:
+      mavenPomFile: 'pom.xml'
+      options: '-Dlib.version=$(createTagVariableStep.TAG) -Drelease-repo.id=$(releaseRepoId) -Drelease-repo.url=$(releaseRepoUrl)'
+      mavenAuthenticateFeed: true
+      publishJUnitResults: false
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.17'
+      goals: 'package deploy'

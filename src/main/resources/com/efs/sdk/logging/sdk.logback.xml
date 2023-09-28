@@ -1,0 +1,43 @@
+<!--
+Copyright (C) 2023 e:fs TechHub GmbH (sdk@efs-techhub.com)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <springProperty scope="context" name="springAppName" source="spring.application.name"/>
+    <springProperty scope="context" name="springAppVersion" source="app.project.version"/>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <appender name="AppInsightsAppender"
+              class="com.efs.sdk.logging.SDKApplicationInsightsAppender">
+    </appender>
+    <appender name="AuditLogAppender"
+              class="com.efs.sdk.logging.SDKApplicationInsightsAppender">
+        <isAudit>true</isAudit>
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
+                <marker>AUDIT</marker>
+            </evaluator>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="AppInsightsAppender"/>
+        <appender-ref ref="AuditLogAppender"/>
+    </root>
+    <logger name="org.springframework.web" level="DEBUG"/>
+    <logger name="com.efs.sdk" level="INFO"/>
+</configuration>

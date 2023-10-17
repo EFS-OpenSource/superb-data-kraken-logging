@@ -9,7 +9,7 @@
     <version>${lib.version}</version>
 
     <properties>
-        <lib.version>1.0.0</lib.version>
+        <lib.version>1.0.0-SNAPSHOT</lib.version>
         <snapshot-repo.id>sid</snapshot-repo.id>
         <snapshot-repo.url></snapshot-repo.url>
         <release-repo.id>rid</release-repo.id>

@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - contributing guide
 
 ### Changed
-- none
+- log level of org.springframework.web set to INFO
 
 ### Removed
 - none

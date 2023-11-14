@@ -38,6 +38,6 @@ limitations under the License.
         <appender-ref ref="AppInsightsAppender"/>
         <appender-ref ref="AuditLogAppender"/>
     </root>
-    <logger name="org.springframework.web" level="DEBUG"/>
+    <logger name="org.springframework.web" level="INFO"/>
     <logger name="com.efs.sdk" level="INFO"/>
 </configuration>

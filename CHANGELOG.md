@@ -6,6 +6,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 1.0.2 - 2023-11-22
+
+### Added
+- none
+
+### Changed
+- fixed sdk.logback.xml
+
+### Removed
+- none
+
+---
+
+
 ## 1.0.1 - 2023-10-17
 
 ### Added
